@@ -6,13 +6,18 @@ export default function App() {
   const [numA, setNumA] = useState(0);
   const [numB, setNumB] = useState(0);
   const [result, setResult] = useState(0);
+  const [history, setHistory] = useState([]);
 
   const addition = () => {
-    setResult(parseFloat(numA) + parseFloat(numB));
+    let sum = parseFloat(numA) + parseFloat(numB);
+    setResult(sum);
+    setHistory([...history, {key: `${numA} + ${numB} = ${sum}`}]);
   };
 
   const subtraction = () => {
-    setResult(parseFloat(numA) - parseFloat(numB));
+    let sum = parseFloat(numA) - parseFloat(numB);
+    setResult(sum)
+    setHistory([...history, {key: `${numA} - ${numB} = ${sum}`}]);
   };
 
   return (
@@ -31,11 +36,18 @@ export default function App() {
           value={String(numB)}
           keyboardType="numeric"
         />
-        <TextInput />
       </View>
-      <View style={styles.button}>
+      <View style={styles.buttoncont}>
         <Button title="+" onPress={addition} />
         <Button title="-" onPress={subtraction} />
+      </View>
+      <View style={styles.listcont}>
+        <Text       >History</Text>
+        <FlatList
+          data={history}
+          renderItem={({item}) => <Text>{item.key}</Text>}
+          keyExtractor={((item, index) => index.toString())}
+        />
       </View>
       <StatusBar style="auto" />
     </View>
@@ -49,11 +61,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-  button: {
-    flex: 2,
+  buttoncont: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'space-around',
     color: 'red'
+  },
+  listcont: {
+    flex: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     borderColor: 'grey',
